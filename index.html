@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -7,6 +7,7 @@
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
     <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/animate.css"/>
 </head>
 <body>
 
@@ -16,24 +17,33 @@
         </header>
 
         <section class="score-panel">
-        	<ul class="stars">
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        	</ul>
+            <ul class="stars">
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star"></i></li>
+            </ul>
 
-        	<span class="moves">3</span> Moves
+            <span class="moves">3</span> Moves
 
             <div class="restart">
-        		<i class="fa fa-repeat"></i>
-        	</div>
+                <i class="fa fa-repeat"></i>
+            </div>
         </section>
 
-        <ul class="deck">
-         
-        </ul>
+        <ul class="deck"></ul>
     </div>
-    <script src="js/underscore-min.js"></script>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <h1 class="white-color">You Win!</h1>
+        <button class="btn-success" id="btn-play-again" >Play again</button>
+        <button class="btn-normal" id="btn-close">Close</button>
+    </div>
+</div>
+<audio src="audio/Tada-sound.mp3" id="tada" ></audio>
+<audio src="audio/Single-clap-sound effect.mp3" id="clap"></audio>
+<audio src="audio/Game-fail-sound-effect.mp3" id="fail"></audio>
+<audio src="audio/Big-crowd-cheering.mp3" id="winner"></audio>
+<script src="js/underscore-min.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
