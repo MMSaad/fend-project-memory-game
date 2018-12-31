@@ -29,7 +29,6 @@ body {
 }
 
 h1 {
-    font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
 
@@ -110,61 +109,42 @@ h1 {
 
 
 
-/* The Modal (background) */
+/* The Modal -winner- dialog */
+
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    overflow: hidden; /* Enable scroll if needed */
+    background: white;
 }
 
-/* Modal Content */
+.visible {
+    display: table;
+}
+
 .modal-content {
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    margin: auto;
-    padding: 20px;
-    width: 50%;
-}
-
-/* The Close Button */
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+    background: white;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 }
 
 
-.white-color {
-    color: white;
+
+.primary-color {
+    color: #02ccba;
 }
 
 .btn-success {
-    color: black;
-    background: white;
+    color: white;
+    background: #02ccba;
     padding: 8px;
     border: 0px;
     margin: 4px;
 }
 
-.btn-normal {
-    color: white;
-    background: red;
-    padding: 8px;
-    border: 0px;
-    margin: 4px;
-}

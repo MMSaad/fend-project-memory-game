@@ -1,3 +1,5 @@
+
+
 window.onload = function () {
 
     /***
@@ -8,6 +10,11 @@ window.onload = function () {
          * Player current game moves
          */
         moves: 0,
+
+        /**
+         * Player score stars
+         */
+        stars: 0,
 
         /**
          * Deck cards
@@ -25,21 +32,19 @@ window.onload = function () {
         cardTypes: ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle', 'bomb']
     };
 
-  
-
-    /*
-     * Display the cards on the page
-     *   - shuffle the list of cards using the provided 'shuffle' method below
-     *   - loop through each card and create its HTML
-     *   - add each card's HTML to the page
+    /**
+     * Reset the game
      */
-
+    game.restart = function () {
+        toggleModal();
+        game.start();
+    };
 
     /**
-     * Game start/restart
+     * Game start
      */
     game.start = function () {
-        modal.style.display = 'none';
+
         //Reset game moves
         game.moves = 0;
 
@@ -83,13 +88,13 @@ window.onload = function () {
 
             // Create card icon based on card type
             const cardIcon = document.createElement('i');
-            cardIcon.classList.add('fa');
-            cardIcon.classList.add('fa-' + cards[card].type);
+            cardIcon.classList.add('fa', 'fa-' + cards[card].type);
 
             //Create card element
             const cardElement = document.createElement('li');
-            cardElement.classList.add('card');
-            cardElement.classList.add('animated');
+            cardElement.classList.add('card', 'animated');
+
+            //Set element id to be used for access cards items
             cardElement.setAttribute('id', cards[card].id);
             cardElement.appendChild(cardIcon);
 
@@ -114,35 +119,33 @@ window.onload = function () {
      * Update player score rating
      */
     game.updateStarsScore = function () {
-        let solvedItemsCount = _.filter(game.cards, function (c) {
-            return c.match == true
+        const solvedItemsCount = _.filter(game.cards, function (c) {
+            return c.match === true;
         }).length;
-        let stars = 3;
+        game.stars = 3;
         const percentage = (solvedItemsCount + 16) / game.moves;
         console.log(percentage);
 
         if (percentage < 0.75) {
-            stars = 2;
+            game.stars = 2;
         }
         if (percentage < 0.5) {
-            stars = 1;
+            game.stars = 1;
         }
-        game.updateStartsUi(stars);
+        game.updateStartsUi();
     }
 
     /**
      * Update Play score rating UI
-     * @param {any} stars Current calculated stars based on player moves
      */
-    game.updateStartsUi = function (stars) {
+    game.updateStartsUi = function () {
         while (starsScore.firstChild) {
             starsScore.removeChild(starsScore.firstChild);
         }
-        for (var i = 0; i < stars; i++) {
+        for (var i = 0; i < game.stars; i++) {
             const child = document.createElement('li');
             const star = document.createElement('i');
-            star.classList.add('fa');
-            star.classList.add('fa-star');
+            star.classList.add('fa', 'fa-star');
             child.appendChild(star);
             starsScore.appendChild(child);
         }
@@ -150,35 +153,41 @@ window.onload = function () {
 
     /**
      * Check if game finished
-     * show popup to congrate the player with option to restart the game
+     * show popup to congratulate the player with option to restart the game
      */
     game.checkGameFinished = function () {
-        var remainingCards = _.filter(game.cards,
+        const  remainingCards = _.filter(game.cards,
             function (c) {
-                return c.match == false
+                return c.match === false;
             });
-        if (remainingCards.length == 0) {
+        if (remainingCards.length === 0) {
             //Game is Finished
-            console.log('Game is Finished');
-            modal.style.display = 'block';
+            stats.innerText = `With ${game.moves} Moves and ${game.stars} Stars`;
+            toggleModal();
             winner.play();
         }
     };
 
 
-
-    function hideModal() {
-        modal.style.display = 'none';
+    /**
+     * Toggle Winner modal visibility
+     */
+    function toggleModal() {
+        modal.classList.toggle('visible');
     }
 
     /**
-     * Add Player move
+     * Add Player's game move
      */
     game.addMove = function () {
         game.moves++;
         game.updateMoves();
-    }
+    };
 
+    /**
+     * On Deck card click
+     * @param {any} e Card element
+     */
     game.cardClicked = function (e) {
 
         //To ignore clicks of non cards
@@ -186,13 +195,15 @@ window.onload = function () {
             return;
         }
 
-        var cardElement = document.querySelector('#' + e.target.id);
+        var cardElement = e.target;
+
         //ignore clicks on matched or open cards
         if (cardElement.classList.contains('match') || cardElement.classList.contains('open')) {
             return;
         }
 
-        var card = _.find(game.cards, function (c) { return c.id == e.target.id });
+        //Check if card exists in cards array
+        var card = _.find(game.cards, function (c) { return c.id === e.target.id });
         if (card == undefined || card.match === true) {
             return;
         }
@@ -203,48 +214,78 @@ window.onload = function () {
 
 
 
-
+        // if there's open unmatched two cards
         if (game.openCards.length == 2) {
             for (const i in game.openCards) {
                 let openCard = game.openCards[i];
-                openCard.classList.remove('show');
-                openCard.classList.remove('open');
+                openCard.classList.remove('show', 'open');
                 openCard.classList.toggle('flipInY');
                 openCard.classList.toggle('shake');
             }
+
+            //reset open cards array
             game.openCards = [];
+
+            //play fail sound
             fail.play();
         }
 
-
+        // if there's one card open check if it's match with new card
         if (game.openCards.length == 1) {
+
+            // get other opened card
             var otherCard = _.find(game.cards, function (c) {
                 return c.id == game.openCards[0].id;
             });
             if (otherCard.type == card.type) {
                 card.match = true;
                 otherCard.match = true;
-                game.openCards[0].classList.add('match');
-                cardElement.classList.add('match');
-                cardElement.classList.toggle('shake');
-                cardElement.classList.toggle('tada');
-                game.openCards[0].classList.toggle('flipInY');
-                game.openCards[0].classList.toggle('tada');
-                game.openCards = [];
-                tada.play();
-                game.checkGameFinished();
+                game.matchCardElements(game.openCards[0], cardElement);
                 return;
             }
         }
 
+        // Show clicked card with animation
         cardElement.classList.add('show');
         cardElement.classList.add('open');
         cardElement.classList.toggle('flipInY');
+
+        // Add clicked card to open cards array
         game.openCards.push(cardElement);
+
+        // play clap sound
         clap.play();
 
     }
 
+    /**
+     * Match two cards
+     * @param {any} firstCard the first - old - card
+     * @param {any} secondCard the second - new - card
+     */
+    game.matchCardElements = function (firstCard, secondCard) {
+
+        //Set cards as matched
+        firstCard.classList.add('match');
+        secondCard.classList.add('match');
+
+        //Remove old animation
+        secondCard.classList.toggle('shake');
+        firstCard.classList.toggle('flipInY');
+
+        //Add tada animation
+        secondCard.classList.toggle('tada');
+        firstCard.classList.toggle('tada');
+
+        //reset open cards
+        game.openCards = [];
+
+        //play tada sound
+        tada.play();
+
+        //check if game finished
+        game.checkGameFinished();
+    };
 
 
     /***
@@ -254,44 +295,20 @@ window.onload = function () {
     const movesSpan = document.querySelector('.moves');
     const starsScore = document.querySelector('.stars');
     const modal = document.getElementById('myModal');
+    const stats = document.getElementById('stats');
 
+    //UI Event handlers
     document.querySelector('.restart').addEventListener('click', game.start);
-    document.querySelector('#btn-play-again').addEventListener('click', game.start);
-    document.querySelector('#btn-close').addEventListener('click', hideModal);
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            hideModal();
-        }
-    };
+    document.querySelector('#btn-play-again').addEventListener('click', game.restart);
 
+    //Sound files
     const clap = document.getElementById('clap');
     const tada = document.getElementById('tada');
     const fail = document.getElementById('fail');
     const winner = document.getElementById('winner');
 
+    //Start the game
     game.start();
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-     * set up the event listener for a card. If a card is clicked:
-     *  - display the card's symbol (put this functionality in another function that you call from this one)
-     *  - add the card to a *list* of 'open' cards (put this functionality in another function that you call from this one)
-     *  - if the list already has another card, check to see if the two cards match
-     *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
-     *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
-     *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
-     *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
-     */
 
 
 };
