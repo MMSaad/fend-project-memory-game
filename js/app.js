@@ -59,7 +59,6 @@ window.onload = function () {
      * Game start
      */
     game.start = function () {
-        console.log(this);
 
         //Clear interval function if any
         if(game.timerHandler !== undefined){
@@ -91,7 +90,6 @@ window.onload = function () {
                 looper++;
             }
         }
-        console.log(game.timer);
         
        game.timerHandler = setInterval(game.timer,1000,1000);
         this.cards = _.shuffle(game.cards);
@@ -100,7 +98,6 @@ window.onload = function () {
 
     game.timer = function(){
         if(game.running === true){
-            console.log(moment.now(),game.startDate);
             const formtedDate = moment(moment.now()-game.startDate).format('mm:ss');
             timer.innerHTML =`${formtedDate}`;
         }
@@ -159,7 +156,6 @@ window.onload = function () {
         }).length;
         this.stars = 3;
         const percentage = (solvedItemsCount + 16) / this.moves;
-        console.log(percentage);
 
         if (percentage < 0.75) {
             this.stars = 2;
@@ -244,7 +240,7 @@ window.onload = function () {
         if (card == undefined || card.match === true) {
             return;
         }
-        console.log(e);
+        
         //Update play game moves
         game.addMove();
         game.updateMoves();
