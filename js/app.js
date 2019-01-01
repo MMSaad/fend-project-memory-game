@@ -1,11 +1,8 @@
-
-
 window.onload = function () {
 
     /***
   * UI Element references
   */
-
     const deck = document.querySelector(".deck");
     const movesSpan = document.querySelector(".moves");
     const starsScore = document.querySelector(".stars");
@@ -21,11 +18,17 @@ window.onload = function () {
     const fail = document.getElementById("fail");
     const winner = document.getElementById("winner");
 
+    //Load sound files
+    clap.load();
+    tada.load();
+    fail.load();
+    winner.load();
+
 
     /***
      * Create Game object
      */
-    let game = {
+    const  game = {
         /**
          * Player current game moves
          */
@@ -83,40 +86,37 @@ window.onload = function () {
 
 
         timer.innerHTML = "00:00";
-        this.running = true;
+        game.running = true;
         game.startDate = moment.now();
 
         //Reset game moves
-        this.moves = 0;
+        game.moves = 0;
 
         //reset game cards
-        this.cards = [];
-
-        let looper = 0;
-
-        for (const type in this.cardTypes) {
-
+        game.cards = [];
+        let iterator = 0;
+        for (const cardType of game.cardTypes) {
             for (let i = 0; i < 2; i++) {
                 const newCard = {
-                    type: this.cardTypes[type],
+                    type: cardType,
                     open: false,
                     match: false,
-                    id: "card" + looper
+                    id: `card${iterator}`
                 };
-                this.cards.push(newCard);
-                looper++;
+                game.cards.push(newCard);
+                iterator++;
             }
         }
 
         game.timerHandler = setInterval(game.timer, 1000, 1000);
-        this.cards = _.shuffle(game.cards);
-        game.renderDeck(game.cards);
+        game.cards = _.shuffle(game.cards);
+        game.renderDeck();
     };
 
     game.timer = function () {
         if (game.running === true) {
-            const formtedDate = moment(moment.now() - game.startDate).format("mm:ss");
-            timer.innerHTML = `${formtedDate}`;
+            const formattedDate = moment(moment.now() - game.startDate).format("mm:ss");
+            timer.innerHTML = `${formattedDate}`;
         }
     };
 
@@ -125,7 +125,7 @@ window.onload = function () {
      * Render Deck UI Cards
      * @param {any} cards Game Cards
      */
-    game.renderDeck = function (cards) {
+    game.renderDeck = function () {
 
         //Clear old cards
         while (deck.firstChild) {
@@ -133,18 +133,17 @@ window.onload = function () {
         }
 
         //Render game cards
-        for (const card in this.cards) {
-
+        for (const card of game.cards) {
             // Create card icon based on card type
             const cardIcon = document.createElement("i");
-            cardIcon.classList.add("fa", "fa-" + cards[card].type);
+            cardIcon.classList.add("fa", `fa-${card.type}`);
 
             //Create card element
             const cardElement = document.createElement("li");
             cardElement.classList.add("card", "animated");
 
             //Set element id to be used for access cards items
-            cardElement.setAttribute("id", cards[card].id);
+            cardElement.setAttribute("id", card.id);
             cardElement.appendChild(cardIcon);
 
             //Handle card click listener
@@ -153,7 +152,7 @@ window.onload = function () {
             //Append card to deck
             deck.appendChild(cardElement);
         }
-        this.updateMoves();
+        game.updateMoves();
     };
 
     /***
@@ -161,26 +160,26 @@ window.onload = function () {
      */
     game.updateMoves = function () {
         movesSpan.innerText = game.moves;
-        this.updateStarsScore();
+        game.updateStarsScore();
     };
 
     /***
      * Update player score rating
      */
     game.updateStarsScore = function () {
-        const solvedItemsCount = _.filter(this.cards, function (c) {
+        const solvedItemsCount = _.filter(game.cards, function (c) {
             return c.match === true;
         }).length;
-        this.stars = 3;
-        const percentage = (solvedItemsCount + 16) / this.moves;
+        game.stars = 3;
+        const percentage = (solvedItemsCount + 16) / game.moves;
 
         if (percentage < 0.75) {
-            this.stars = 2;
+            game.stars = 2;
         }
         if (percentage < 0.5) {
-            this.stars = 1;
+            game.stars = 1;
         }
-        this.updateStartsUi();
+        game.updateStartsUi();
     }
 
     /**
@@ -190,7 +189,7 @@ window.onload = function () {
         while (starsScore.firstChild) {
             starsScore.removeChild(starsScore.firstChild);
         }
-        for (var i = 0; i < this.stars; i++) {
+        for (let i = 0; i < game.stars; i++) {
             const child = document.createElement("li");
             const star = document.createElement("i");
             star.classList.add("fa", "fa-star");
@@ -204,7 +203,7 @@ window.onload = function () {
      * show popup to congratulate the player with option to restart the game
      */
     game.checkGameFinished = function () {
-        const remainingCards = _.filter(this.cards,
+        const remainingCards = _.filter(game.cards,
             function (c) {
                 return c.match === false;
             });
@@ -218,7 +217,7 @@ window.onload = function () {
 
 
             const formtedDate = moment(moment.now() - game.startDate).format("mm:ss");
-            stats.innerText = `With ${this.moves} Moves , ${formtedDate} time and ${this.stars} Stars`;
+            stats.innerText = `With ${game.moves} Moves , ${formtedDate} time and ${game.stars} Stars`;
             toggleModal();
             winner.play();
         }
@@ -236,8 +235,8 @@ window.onload = function () {
      * Add Player"s game move
      */
     game.addMove = function () {
-        this.moves++;
-        this.updateMoves();
+        game.moves++;
+        game.updateMoves();
     };
 
     /**
@@ -251,7 +250,7 @@ window.onload = function () {
             return;
         }
 
-        var cardElement = e.target;
+        const cardElement = e.target;
 
         //ignore clicks on matched or open cards
         if (cardElement.classList.contains("match") || cardElement.classList.contains("open")) {
@@ -259,7 +258,7 @@ window.onload = function () {
         }
 
         //Check if card exists in cards array
-        var card = _.find(game.cards, function (c) { return c.id === e.target.id });
+        const card = _.find(game.cards, function (c) { return c.id === e.target.id });
         if (card == undefined || card.match === true) {
             return;
         }
@@ -277,7 +276,7 @@ window.onload = function () {
 
 
             // get other opened card
-            var otherCard = _.find(game.cards, function (c) {
+            const otherCard = _.find(game.cards, function (c) {
                 return c.id === game.openCards[0].id;
             });
             if (otherCard.type === card.type) {
@@ -304,6 +303,11 @@ window.onload = function () {
 
     };
 
+    /**
+     * Hide unmatched cards with animation and sound
+     * @param {any} firstCard the first - old - card
+     * @param {any} secondCard the second - new - card
+     */
     game.unmatchCardElements = function (firstCard, secondCard) {
 
         // mark second card visible
@@ -347,13 +351,13 @@ window.onload = function () {
         firstCard.classList.toggle("tada");
 
         //reset open cards
-        this.openCards = [];
+        game.openCards = [];
 
         //play tada sound
         tada.play();
 
         //check if game finished
-        this.checkGameFinished();
+        game.checkGameFinished();
     };
 
 
