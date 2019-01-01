@@ -34,6 +34,7 @@ body {
 
 h1 {
     font-weight: 300;
+    padding: 16px;
 }
 
 /*
@@ -105,6 +106,8 @@ h1 {
     margin: 0;
     padding: 0;
     display: inline-block;
+    color:#02ccba;
+    font-size: 1.5em;
 }
 .score-panel .col-3{
     text-align: center;
