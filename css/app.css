@@ -95,8 +95,8 @@ h1 {
  */
 
 .score-panel {
-    text-align: left;
-    width: 345px;
+    width: 100%;
+    
     
     margin-bottom: 16px;
 }
@@ -105,7 +105,9 @@ h1 {
     margin: 0;
     padding: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
+}
+.score-panel .col-3{
+    text-align: center;
 }
 
 .score-panel .stars li {
@@ -118,7 +120,9 @@ h1 {
     cursor: pointer;
 }
 
-
+.v-center{
+    align-items: center;
+}
 
 /* The Modal -winner- dialog */
 
@@ -173,3 +177,9 @@ h1 {
         margin-right: unset;
     }
 } 
+
+@media only screen  and (max-width:400px) and (min-height:700px){
+    .deck{
+        max-height: 500px;
+    }
+}

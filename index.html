@@ -6,6 +6,7 @@
     <meta name="description" content="">
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/animate.css" />
 </head>
@@ -17,21 +18,24 @@
         </header>
 
         <section class="score-panel">
-            <ul class="stars">
+            <div class="row v-center">
+            <ul class="stars col-3">
                 <li><i class="fa fa-star"></i></li>
                 <li><i class="fa fa-star"></i></li>
                 <li><i class="fa fa-star"></i></li>
             </ul>
 
-            <span class="timer">00:00</span>
+            <span class="timer  col-3">00:00</span>
 
-            <span class="moves">3</span> Moves
-            
+            <div class="col-3">
+            <span class="moves  ">3</span> Moves
+        </div>
             
 
-            <div class="restart">
-                <i class="fa fa-repeat"></i>
+            <div class="restart  col-3">
+                <i class="fa fa-repeat btn btn-success"></i>
             </div>
+        </div>
         </section>
         
         <!-- Game Deck-->
