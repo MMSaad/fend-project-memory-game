@@ -8,6 +8,9 @@ https://github.com/moment/moment/
 Underscore JS
 https://github.com/jashkenas/underscore
 
+Bootstrap library
+https://github.com/twbs/bootstrap
+
 Sound Files source
 https://www.freesoundslibrary.com
 
