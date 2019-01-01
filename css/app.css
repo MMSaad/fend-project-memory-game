@@ -165,28 +165,4 @@ h1 {
     padding: 8px;
     border: 0px;
     margin: 4px;
-}
-
- @media only screen  and (min-width:800px){
-    .deck{
-        width:660px;
-        padding-left: unset;
-        padding: 32px;
-        
-    }
-
-    .deck .card {
-        height: 125px;
-        width: 125px;
-        margin-right: unset;
-    }
-    .score-panel{
-        width:660px;
-    }
 } 
-
-@media only screen  and (max-width:400px) and (min-height:700px){
-    .deck{
-        max-height: 500px;
-    }
-}
