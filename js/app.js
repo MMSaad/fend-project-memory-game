@@ -60,10 +60,7 @@ window.onload = function () {
      */
     game.start = function () {
 
-        //Clear interval function if any
-        if(game.timerHandler !== undefined){
-            window.clearInterval(game.timerHandler);
-        }
+        
 
         timer.innerHTML='00:00';
         this.running = true;
@@ -194,6 +191,12 @@ window.onload = function () {
         if (remainingCards.length === 0) {
             //Game is Finished
             game.running = false;
+
+
+            //Stop timer
+            window.clearInterval(game.timerHandler);
+
+            
             const formtedDate = moment(moment.now()-game.startDate).format('mm:ss');
             stats.innerText = `With ${this.moves} Moves , ${formtedDate} time and ${this.stars} Stars`;
             toggleModal();
@@ -240,7 +243,7 @@ window.onload = function () {
         if (card == undefined || card.match === true) {
             return;
         }
-        
+
         //Update play game moves
         game.addMove();
         game.updateMoves();
