@@ -1,7 +1,7 @@
-# Memory Game Project
+# Memory Game 
 Simple Memory Game
 
-![alt game](https://mmsaad.github.io/fend-project-memory-game/images/game.png)
+![alt game](https://mmsaad.github.io/fend-project-memory-game/img/game.png)
 
 ## How to run
 Clone this repository or download the zip file
