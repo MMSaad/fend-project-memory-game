@@ -3,7 +3,10 @@ Simple Memory Game
 
 ![alt game](https://mmsaad.github.io/fend-project-memory-game/img/game.png)
 
+
 ## How to run
+You can play it directly from [here](https://mmsaad.github.io/fend-project-memory-game/)
+
 Clone this repository 
 ```
 git clone https://github.com/MMSaad/fend-project-memory-game.git
