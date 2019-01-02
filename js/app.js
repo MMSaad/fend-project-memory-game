@@ -91,7 +91,7 @@ window.onload = function () {
 
         //Reset game moves
         game.moves = 0;
-
+        game.updateMoves();
         //reset game cards
         game.cards = [];
         let iterator = 0;
@@ -152,7 +152,7 @@ window.onload = function () {
             //Append card to deck
             deck.appendChild(cardElement);
         }
-        game.updateMoves();
+        
     };
 
     /***
@@ -167,16 +167,11 @@ window.onload = function () {
      * Update player score rating
      */
     game.updateStarsScore = function () {
-        const solvedItemsCount = _.filter(game.cards, function (c) {
-            return c.match === true;
-        }).length;
+        if(game.moves <= 10){
         game.stars = 3;
-        const percentage = (solvedItemsCount + 16) / game.moves;
-
-        if (percentage < 0.75) {
-            game.stars = 2;
-        }
-        if (percentage < 0.5) {
+        }else if(game.moves <= 14){
+            game.stars = 2
+        }else{
             game.stars = 1;
         }
         game.updateStartsUi();
@@ -263,9 +258,7 @@ window.onload = function () {
             return;
         }
 
-        //Update play game moves
-        game.addMove();
-        game.updateMoves();
+       
 
 
 
@@ -330,6 +323,9 @@ window.onload = function () {
 
         game.openCards = [];
         fail.play();
+         
+         //Update play game moves
+         game.addMove();
     };
 
     /**
@@ -355,6 +351,9 @@ window.onload = function () {
 
         //play tada sound
         tada.play();
+
+        //Update play game moves
+        game.addMove();
 
         //check if game finished
         game.checkGameFinished();

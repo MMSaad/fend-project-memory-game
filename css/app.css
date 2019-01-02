@@ -130,15 +130,16 @@ h1 {
 /* The Modal -winner- dialog */
 
 .modal {
+    
     display: none; 
     position: fixed; 
     z-index: 9999; 
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: hidden; /* Enable scroll if needed */
-    background: white;
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    
 }
 
 .visible {
@@ -146,7 +147,7 @@ h1 {
 }
 
 .modal-content {
-    background: white;
+    background: #ffffff url('../img/geometry2.png');
     display: table-cell;
     vertical-align: middle;
     text-align: center;
