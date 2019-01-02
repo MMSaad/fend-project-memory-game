@@ -1,8 +1,8 @@
 window.onload = function () {
 
     /***
-  * UI Element references
-  */
+     * UI Element references
+     */
     const deck = document.querySelector(".deck");
     const movesSpan = document.querySelector(".moves");
     const starsScore = document.querySelector(".stars");
@@ -134,17 +134,18 @@ window.onload = function () {
 
         //Render game cards
         for (const card of game.cards) {
-            // Create card icon based on card type
-            const cardIcon = document.createElement("i");
-            cardIcon.classList.add("fa", `fa-${card.type}`);
 
             //Create card element
             const cardElement = document.createElement("li");
+            
+            //setup card element's classes
             cardElement.classList.add("card", "animated");
+
+            //Add card icon
+            cardElement.innerHTML = `<i class="fa fa-${card.type}" /> `;
 
             //Set element id to be used for access cards items
             cardElement.setAttribute("id", card.id);
-            cardElement.appendChild(cardIcon);
 
             //Handle card click listener
             cardElement.addEventListener("click", game.cardClicked);
@@ -186,9 +187,7 @@ window.onload = function () {
         }
         for (let i = 0; i < game.stars; i++) {
             const child = document.createElement("li");
-            const star = document.createElement("i");
-            star.classList.add("fa", "fa-star");
-            child.appendChild(star);
+            child.innerHTML = `<i class="fa fa-star" />`;
             starsScore.appendChild(child);
         }
     };
